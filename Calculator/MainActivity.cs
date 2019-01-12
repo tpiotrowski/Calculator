@@ -93,9 +93,52 @@ namespace Calculator
 
             };
 
+            var btnIsPrime = FindViewById<Button>(Resource.Id.button1);
+            var primeText = FindViewById<TextInputEditText>(Resource.Id.tiPrime);
+
+
+
+
+            btnIsPrime.Click += (sender, args) =>
+            {
+                
+                try
+                {
+                    int val = ParseNumberToInt(primeText.Text);
+                    if (IsPrime(val))
+                    {
+                        Toast.MakeText(this, $"Result: {val} is prime number", ToastLength.Long).Show();
+                        return;
+                    }
+                    else
+                    {
+                        var prime = Calculation(val);
+                        Toast.MakeText(this, $"Nearest prime to {val} is {prime}", ToastLength.Long).Show();
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Toast.MakeText(this, "Error wrong number", ToastLength.Long).Show();
+                    return;
+                }
+
+            };
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
+        }
+
+        private int ParseNumberToInt(string primeTextText)
+        {
+            if (int.TryParse(primeTextText, out int value))
+            {
+                return value;
+            }
+            else
+            {
+                throw new ArgumentException("Is not a number");
+            }
         }
 
         private double MnozItems(double val1, double val2)
@@ -154,6 +197,46 @@ namespace Calculator
             Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
                 .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
         }
-	}
+
+        public static bool IsPrime(int number)
+        {
+            if (number <= 1) return false;
+            if (number == 2) return true;
+            if (number % 2 == 0) return false;
+
+            var boundary = (int)Math.Floor(Math.Sqrt(number));
+
+            for (int i = 3; i <= boundary; i += 2)
+                if (number % i == 0)
+                    return false;
+
+            return true;
+        }
+
+        public int Calculation(int number)
+        {
+            while (true)
+            {
+                bool isPrime = true;
+                //increment the number by 1 each time
+                number = number - 1;
+
+                int squaredNumber = (int)Math.Sqrt(number);
+
+                //start at 2 and increment by 1 until it gets to the squared number
+                for (int i = 2; i <= squaredNumber; i++)
+                {
+                    //how do I check all i's?
+                    if (number % i == 0)
+                    {
+                        isPrime = false;
+                        break;
+                    }
+                }
+                if (isPrime)
+                    return number;
+            }
+        }
+    }
 }
 

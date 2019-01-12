@@ -49,6 +49,28 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/linearLayout1"
 		android:id="@+id/textView1" />
+	<LinearLayout
+		android:orientation="horizontal"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/textView1"
+		android:id="@+id/linearLayout3" >
+	<android.support.design.widget.TextInputEditText
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:id="@+id/tiPrime"
+				
+				
+			android:layout_weight="30"/>
+		<Button
+			android:text="Is prime"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:id="@+id/button1" />
+
+	</LinearLayout>
 
 	
 
