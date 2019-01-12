@@ -31,13 +31,32 @@ namespace Calculator
             var firstValueText = FindViewById<TextInputEditText>(Resource.Id.textInputEditText1);
             var secondValueText = FindViewById<TextInputEditText>(Resource.Id.textInputEditText2);
 
+            double val1 = 0;
+            double val2 = 0;
 
             list.ItemClick += (sender, args) =>
             {
                 try
                 {
-                    double val1 = ParseNumber(firstValueText.Text);
-                    double val2 = ParseNumber(secondValueText.Text);
+                     val1 = ParseNumber(firstValueText.Text);
+                }
+                catch (Exception e)
+                {
+                    Toast.MakeText(this, "Error Val1 wrong number", ToastLength.Long).Show();
+                    return;
+                }
+
+                try
+                {
+                    val2 = ParseNumber(secondValueText.Text);
+                }
+                catch (Exception e)
+                {
+                    Toast.MakeText(this, "Error Val2 wrong number", ToastLength.Long).Show();
+                    return;
+                }
+
+                double result = 0;
 
                     if (args.View is TextView textView)
                     {
@@ -46,33 +65,42 @@ namespace Calculator
 
                         if (textViewText == "+")
                         {
-                            SumItems();
+                            result = SumItems(val1,val2);
                         }
                         else if (textViewText == "-")
                         {
-                            SubstractItems();
+                            result = SubstractItems(val1, val2);
                         }
                         else if (textViewText == "/")
                         {
-                            DivideItems();
+                            if (val2 == 0)
+                            {
+                                Toast.MakeText(this, "Can not divide by 0", ToastLength.Long).Show();
+                                return;
+                        }
+
+                            result = DivideItems(val1, val2);
                         }
                         else if (textViewText == "*")
                         {
-                            SumItems();
+                            result = MnozItems(val1,val2);
                         }
                     }
 
+                    var resulTextView = FindViewById<TextView>(Resource.Id.textView1);
 
-                }
-                catch (Exception e)
-                {
-                    Toast.MakeText(this, "Error wrong number", ToastLength.Long);
-                }
+                    resulTextView.Text = result.ToString();
+
             };
 
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
+        }
+
+        private double MnozItems(double val1, double val2)
+        {
+            return val1 * val2;
         }
 
 
@@ -88,19 +116,19 @@ namespace Calculator
             }
         }
 
-        private void DivideItems()
+        private double DivideItems(double val1, double val2)
         {
-            throw new NotImplementedException();
+            return val1 / val2;
         }
 
-        private void SubstractItems()
+        private double SubstractItems(double val1, double val2)
         {
-            throw new NotImplementedException();
+            return val1 - val2;
         }
 
-        private void SumItems()
+        private double SumItems(double val1, double val2)
         {
-            throw new NotImplementedException();
+            return val1 + val2;
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
